@@ -16,6 +16,9 @@ const userSchema = new Schema(
       type: "string",
       required: true,
     },
+    image:{
+type:"object"
+    },
     age: Number,
     gender: {
       type: "string",

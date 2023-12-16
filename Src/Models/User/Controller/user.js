@@ -1,4 +1,5 @@
 import { UserCollections } from "../../../../Db/Collections/User.js";
+import Cloud from "../../../Utils/Cloud.js";
 import { AsyncHandeler } from "../../../Utils/Error.js";
 import { Compare, Hash } from "../../../Utils/Hash&Compare.js";
 import { VerifyToken } from "../../../Utils/Token.js";
@@ -25,4 +26,13 @@ export const UpdatePassword=AsyncHandeler(async(req,res,next)=>{
    check.password=hash;
    check.save();
    return res.status(200).json({message:"sucess",update:true,check})
+})
+
+export const addImage=AsyncHandeler(async(req,res,next)=>{
+   if(!req.file){
+      return next(new Error('select image please'))
+   }
+   const{secure_url,public_id}=await Cloud.uploader.upload(req.file.path,{folder:"user"})
+   const update=await UserCollections.findByIdAndUpdate(req.user._id,{image:{secure_url,public_id}},{new :true})
+   return res.status(200).json({message:"success",update})
 })
