@@ -11,3 +11,5 @@ export const VerifyToken =(payload)=>{
     const token=jwt.verify(payload,process.env.private)
     return token
     }
+
+    
